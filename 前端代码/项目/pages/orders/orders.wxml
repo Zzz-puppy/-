@@ -1,0 +1,74 @@
+<view class="container">
+  <view class="section-tabs">
+    <view 
+      class="section-tab {{currentSection === 'buy' ? 'active' : ''}}" 
+      bindtap="switchSection"
+      data-section="buy"
+    >
+      <text>我买到的</text>
+    </view>
+    <view 
+      class="section-tab {{currentSection === 'sell' ? 'active' : ''}}" 
+      bindtap="switchSection"
+      data-section="sell"
+    >
+      <text>我卖出的</text>
+      <view class="badge" wx:if="{{pendingSellCount > 0}}">{{pendingSellCount}}</view>
+    </view>
+  </view>
+
+  <!-- 状态筛选 Tab（仅买家视图显示） -->
+  <view class="tabs" wx:if="{{currentSection === 'buy'}}">
+    <view class="tab-item {{currentStatus === 'all' ? 'active' : ''}}" bindtap="switchStatus" data-status="all">
+      <text>全部</text>
+    </view>
+    <view class="tab-item {{currentStatus === 'pending' ? 'active' : ''}}" bindtap="switchStatus" data-status="pending">
+      <text>待确认</text>
+    </view>
+    <view class="tab-item {{currentStatus === 'review' ? 'active' : ''}}" bindtap="switchStatus" data-status="review">
+      <text>已完成</text>
+    </view>
+  </view>
+
+  <!-- 订单列表 -->
+  <view class="order-list">
+    <view class="order-card" wx:for="{{orders}}" wx:key="id">
+      <view class="order-header">
+        <text class="order-id">订单号: {{item.orderNo}}</text>
+        <text class="order-status {{item.statusClass}}">{{item.statusText}}</text>
+      </view>
+      <view class="order-items">
+        <view class="order-item" wx:for="{{item.items}}" wx:key="id" wx:for-item="product" bindtap="goDetail" data-id="{{product.goodsId}}">
+          <image wx:if="{{product.image}}" class="item-image" src="{{product.image}}" mode="aspectFill" />
+          <view wx:else class="item-image item-placeholder">
+            <text>商品</text>
+          </view>
+          <view class="item-info">
+            <text class="item-title ellipsis-2">{{product.title}}</text>
+            <text class="item-price">¥{{product.price}}</text>
+            <text class="item-count">x{{product.count}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="order-footer">
+        <!-- 买家视图：显示卖家信息 -->
+        <text wx:if="{{currentSection === 'buy' && item.sellerName}}" class="order-counterparty">卖家: {{item.sellerName}}</text>
+        <!-- 卖家视图：显示买家信息 -->
+        <text wx:if="{{currentSection === 'sell' && item.buyerName}}" class="order-counterparty">买家: {{item.buyerName}}</text>
+        <text class="order-total">合计: ¥{{item.totalAmount}}</text>
+        <view class="order-actions">
+          <!-- 买家：待确认订单可取消，不可确认完成 -->
+          <view class="action-btn secondary" wx:if="{{currentSection === 'buy' && item.status === 'pending'}}" bindtap="cancelOrder" data-id="{{item.id}}">
+            <text>取消订单</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty-state" wx:if="{{orders.length === 0}}">
+    <icon type="info" size="80" color="#ccc" />
+    <text wx:if="{{currentSection === 'buy'}}">暂无买到的订单</text>
+    <text wx:else>暂无卖出的订单</text>
+  </view>
+</view>
