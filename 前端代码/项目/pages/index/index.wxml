@@ -1,0 +1,133 @@
+<view class="container">
+  <view class="header">
+    <view class="logo-area">
+      <view class="logo-icon">
+        <text class="logo-text">校</text>
+      </view>
+      <text class="logo-title">校易助</text>
+    </view>
+    <view class="search-bar" bindtap="showSearch">
+      <icon type="search" size="18" color="#999" />
+      <text class="search-placeholder">搜索二手商品</text>
+    </view>
+  </view>
+
+  <view class="banner-area">
+    <swiper class="banner-swiper" indicator-dots autoplay circular interval="3000">
+      <swiper-item>
+        <view class="banner-item">
+          <text class="banner-text">新人专享优惠</text>
+        </view>
+      </swiper-item>
+      <swiper-item>
+        <view class="banner-item banner-2">
+          <text class="banner-text">二手交易更放心</text>
+        </view>
+      </swiper-item>
+      <swiper-item>
+        <view class="banner-item banner-3">
+          <text class="banner-text">校园认证更安全</text>
+        </view>
+      </swiper-item>
+    </swiper>
+  </view>
+
+  <view class="category-section">
+    <view class="section-header">
+      <text class="section-title">分类</text>
+    </view>
+    <view class="category-grid">
+      <view 
+        class="category-item" 
+        wx:for="{{categories}}" 
+        wx:key="id"
+        bindtap="selectCategory"
+        data-id="{{item.id}}"
+      >
+        <view class="category-icon">
+          <text>{{item.iconText}}</text>
+        </view>
+        <text class="category-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section-header">
+    <text class="section-title">热门推荐</text>
+    <view class="section-more" bindtap="goMore">
+      <text>更多</text>
+      <icon type="arrowright" size="16" color="#999" />
+    </view>
+  </view>
+
+  <view class="goods-list">
+    <view class="goods-card" wx:for="{{goodsList}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <image wx:if="{{item.coverImage}}" class="goods-image" src="{{item.coverImage}}" mode="aspectFill" />
+      <view wx:else class="goods-image image-placeholder">
+        <text>{{item.categoryName || '商品'}}</text>
+      </view>
+      <view class="goods-info">
+        <text class="goods-title ellipsis-2">{{item.title}}</text>
+        <view class="goods-tags">
+          <text class="tag tag-primary" wx:if="{{item.isCertified}}">本校认证</text>
+          <text class="tag tag-blue" wx:if="{{item.pickup}}">线下自提</text>
+          <text class="tag tag-orange" wx:if="{{item.tradeable}}">可置换</text>
+        </view>
+        <view class="goods-footer">
+          <text class="goods-price">¥{{item.price}}</text>
+          <view class="seller-info">
+            <image wx:if="{{item.sellerAvatar}}" class="seller-avatar" src="{{item.sellerAvatar}}" mode="aspectFill" />
+            <view wx:else class="seller-avatar avatar-placeholder">
+              <text>{{item.sellerInitial || '卖'}}</text>
+            </view>
+            <text class="seller-name">{{item.sellerName}}</text>
+            <text class="credit-score">{{item.creditScore}}分</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="list-empty" wx:if="{{goodsList.length === 0}}">
+      <text>暂无推荐商品</text>
+    </view>
+  </view>
+
+  <view class="section-header">
+    <text class="section-title">最新发布</text>
+    <view class="section-more" bindtap="goMore">
+      <text>更多</text>
+      <icon type="arrowright" size="16" color="#999" />
+    </view>
+  </view>
+
+  <view class="goods-list">
+    <view class="goods-card" wx:for="{{newGoodsList}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <image wx:if="{{item.coverImage}}" class="goods-image" src="{{item.coverImage}}" mode="aspectFill" />
+      <view wx:else class="goods-image image-placeholder">
+        <text>{{item.categoryName || '商品'}}</text>
+      </view>
+      <view class="goods-info">
+        <text class="goods-title ellipsis-2">{{item.title}}</text>
+        <view class="goods-tags">
+          <text class="tag tag-primary" wx:if="{{item.isCertified}}">本校认证</text>
+           <text class="tag tag-blue" wx:if="{{item.pickup}}">线下自提</text>
+           <text class="tag tag-orange" wx:if="{{item.tradeable}}">可置换</text>
+        </view>
+        <view class="goods-footer">
+          <text class="goods-price">¥{{item.price}}</text>
+          <view class="seller-info">
+            <image wx:if="{{item.sellerAvatar}}" class="seller-avatar" src="{{item.sellerAvatar}}" mode="aspectFill" />
+            <view wx:else class="seller-avatar avatar-placeholder">
+              <text>{{item.sellerInitial || '卖'}}</text>
+            </view>
+            <text class="seller-name">{{item.sellerName}}</text>
+            <text class="credit-score">{{item.creditScore}}分</text>
+          </view>
+        </view>
+        <view class="publish-time" style="margin-top: 8rpx; text-align: right;">{{item.publishTime}}</view>
+      </view>
+    </view>
+    <view class="list-empty" wx:if="{{newGoodsList.length === 0}}">
+      <text>暂无最新发布</text>
+    </view>
+  </view>
+</view>
