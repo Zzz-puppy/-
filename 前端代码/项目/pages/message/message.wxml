@@ -1,0 +1,71 @@
+<view class="container">
+  <view class="tabs">
+    <view 
+      class="tab-item {{currentTab === 'chat' ? 'active' : ''}}" 
+      bindtap="switchTab"
+      data-tab="chat"
+    >
+      <text>聊天</text>
+    </view>
+    <view 
+      class="tab-item {{currentTab === 'notice' ? 'active' : ''}}" 
+      bindtap="switchTab"
+      data-tab="notice"
+    >
+      <text>通知</text>
+      <view class="badge" wx:if="{{noticeCount > 0}}">{{noticeCount}}</view>
+    </view>
+  </view>
+
+  <view class="tab-content" wx:if="{{currentTab === 'chat'}}">
+    <view class="chat-list" wx:if="{{chatList.length}}">
+      <view class="chat-item" wx:for="{{chatList}}" wx:key="id" bindtap="goChat" data-id="{{item.id}}">
+        <view class="avatar avatar-placeholder">
+          <text>{{item.sellerInitial || '卖'}}</text>
+        </view>
+        <view class="chat-info">
+          <view class="chat-header">
+            <text class="chat-name">{{item.sellerName}}</text>
+            <text class="tag tag-primary tag-small" wx:if="{{item.sellerIsCertified}}">本校认证</text>
+            <text class="chat-time">{{item.updateTime}}</text>
+          </view>
+          <text class="chat-content ellipsis">{{item.lastMessage}}</text>
+          <text class="chat-goods ellipsis">{{item.goodsTitle}}</text>
+        </view>
+        <view class="badge" wx:if="{{item.unread > 0}}">{{item.unread}}</view>
+      </view>
+    </view>
+    <view class="empty-state" wx:else>
+      <icon type="message" size="80" color="#ccc" />
+      <text>暂无聊天，进入商品详情联系卖家</text>
+    </view>
+  </view>
+
+  <view class="tab-content" wx:if="{{currentTab === 'notice'}}">
+    <view class="notice-list" wx:if="{{noticeList.length}}">
+      <view 
+        class="notice-item {{item.isRead ? '' : 'unread'}}" 
+        wx:for="{{noticeList}}" 
+        wx:key="id" 
+        bindtap="onNoticeTap" 
+        data-notice="{{item}}"
+      >
+        <view class="notice-icon {{item.type === 'order' ? 'order' : 'system'}}">
+          <text>{{item.type === 'order' ? '订' : '认'}}</text>
+        </view>
+        <view class="notice-info">
+          <view class="notice-header">
+            <text class="notice-title">{{item.title}}</text>
+            <text class="notice-time">{{item.createTime}}</text>
+          </view>
+          <text class="notice-content ellipsis-2">{{item.content}}</text>
+        </view>
+        <view class="unread-dot" wx:if="{{!item.isRead}}"></view>
+      </view>
+    </view>
+    <view class="empty-state" wx:else>
+      <icon type="info" size="80" color="#ccc" />
+      <text>暂无通知</text>
+    </view>
+  </view>
+</view>

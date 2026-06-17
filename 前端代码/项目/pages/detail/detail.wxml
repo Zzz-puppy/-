@@ -1,0 +1,95 @@
+<scroll-view scroll-y class="scroll-view">
+  <view class="goods-images">
+    <swiper wx:if="{{goods.images.length}}" class="image-swiper" indicator-dots autoplay circular>
+      <swiper-item wx:for="{{goods.images}}" wx:key="index">
+        <image src="{{item}}" mode="aspectFill" class="swiper-image" />
+      </swiper-item>
+    </swiper>
+    <view wx:else class="detail-placeholder">
+      <text>{{goods.categoryName || '商品图片'}}</text>
+    </view>
+  </view>
+
+  <view class="goods-info">
+    <view class="price-row">
+      <text class="price">¥{{goods.price}}</text>
+    </view>
+    <text class="title">{{goods.title}}</text>
+    <view class="goods-tags">
+      <text class="tag tag-primary" wx:if="{{goods.isCertified}}">本校认证</text>
+      <text class="tag tag-blue" wx:if="{{goods.pickup}}">线下自提</text>
+      <text class="tag tag-orange" wx:if="{{goods.tradeable}}">可置换</text>
+    </view>
+    <view class="meta-row">
+      <text class="publish-time">{{goods.publishTime}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">
+      <text class="title-text">商品详情</text>
+    </view>
+    <text class="description">{{goods.description}}</text>
+  </view>
+
+  <view class="card">
+    <view class="section-title">
+      <text class="title-text">卖家信息</text>
+    </view>
+    <view class="seller-info">
+      <image wx:if="{{seller.avatar}}" class="seller-avatar" src="{{seller.avatar}}" mode="aspectFill" />
+      <view wx:else class="seller-avatar seller-avatar-placeholder">
+        <text>{{seller.initial || '卖'}}</text>
+      </view>
+      <view class="seller-detail">
+        <view class="seller-header">
+          <text class="seller-name">{{seller.nickname}}</text>
+          <text class="tag tag-primary" wx:if="{{seller.isCertified}}">认证卖家</text>
+        </view>
+        <view class="seller-meta">
+          <text class="seller-studentId" wx:if="{{seller.isCertified}}">学号: {{seller.studentId}}</text>
+          <text class="credit-score">信用分: {{seller.creditScore}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">
+      <text class="title-text">交易须知</text>
+    </view>
+    <view class="rules">
+      <view class="rule-item">
+        <text class="rule-num">1</text>
+        <text class="rule-text">交易前请确认商品状态，建议当面交易</text>
+      </view>
+      <view class="rule-item">
+        <text class="rule-num">2</text>
+        <text class="rule-text">付款后请尽快联系卖家确认交易时间</text>
+      </view>
+      <view class="rule-item">
+        <text class="rule-num">3</text>
+        <text class="rule-text">如有纠纷请联系平台客服处理</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-bar safe-area-bottom">
+    <view class="bottom-left">
+      <view class="fav-btn {{isFavorited ? 'favorited' : ''}}" bindtap="toggleFavorite">
+        <text>{{isFavorited ? '♥' : '♡'}}</text>
+      </view>
+      <view class="report-btn {{isOwn ? 'btn-disabled' : ''}}" bindtap="goReport">
+        <text>举报</text>
+      </view>
+    </view>
+    <view class="bottom-right">
+      <view class="contact-btn {{isOwn ? 'btn-disabled' : ''}}" bindtap="contactSeller">
+        <text>联系卖家</text>
+      </view>
+      <view class="buy-btn {{isOwn ? 'btn-disabled' : ''}}" bindtap="buyNow">
+        <text>立即购买</text>
+      </view>
+    </view>
+  </view>
+</scroll-view>

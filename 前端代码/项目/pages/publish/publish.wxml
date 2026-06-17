@@ -1,0 +1,139 @@
+<view class="container">
+  <view class="card">
+    <view class="form-item">
+      <text class="form-label">商品图片</text>
+      <view class="upload-area">
+        <view 
+          class="upload-item" 
+          wx:for="{{images}}" 
+          wx:key="index"
+          bindtap="previewImage"
+          data-index="{{index}}"
+        >
+          <image src="{{item}}" mode="aspectFill" />
+          <view class="delete-btn" catchtap="deleteImage" data-index="{{index}}">
+            <text>×</text>
+          </view>
+        </view>
+        <view class="upload-btn" wx:if="{{images.length < 9}}" bindtap="chooseImage">
+          <icon type="plus" size="40" color="#ccc" />
+          <text>添加图片</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">商品标题 <text class="required">*</text></text>
+      <input 
+        class="form-input" 
+        placeholder="请输入商品标题" 
+        value="{{formData.title}}"
+        bindinput="onInputChange"
+        data-field="title"
+      />
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">商品分类 <text class="required">*</text></text>
+      <picker mode="selector" range="{{categories}}" range-key="name" bindchange="onCategoryChange">
+        <view class="picker-content">
+          <text>{{formData.categoryName || '请选择商品分类'}}</text>
+          <icon type="arrowright" size="18" color="#999" />
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">成色 <text class="required">*</text></text>
+      <picker mode="selector" range="{{conditions}}" bindchange="onConditionChange">
+        <view class="picker-content">
+          <text>{{formData.condition || '请选择商品成色'}}</text>
+          <icon type="arrowright" size="18" color="#999" />
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">商品价格 <text class="required">*</text></text>
+      <view class="price-input-wrap">
+        <text class="price-symbol">¥</text>
+        <input 
+          class="price-input" 
+          type="digit" 
+          placeholder="0.00" 
+          value="{{formData.price}}"
+          bindinput="onInputChange"
+          data-field="price"
+        />
+      </view>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">原价（选填）</text>
+      <view class="price-input-wrap">
+        <text class="price-symbol">¥</text>
+        <input 
+          class="price-input" 
+          type="digit" 
+          placeholder="0.00" 
+          value="{{formData.originalPrice}}"
+          bindinput="onInputChange"
+          data-field="originalPrice"
+        />
+      </view>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">交易地点 <text class="required">*</text></text>
+      <picker mode="selector" range="{{locations}}" bindchange="onLocationChange">
+        <view class="picker-content">
+          <text>{{formData.location || '请选择交易地点'}}</text>
+          <icon type="arrowright" size="18" color="#999" />
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">交易方式</text>
+      <view class="checkbox-group">
+        <view 
+          class="checkbox-item {{formData.hasSelfTrade ? 'checked' : ''}}" 
+          bindtap="toggleTradeMethod"
+          data-value="self"
+        >
+          <view class="checkbox">
+            <icon wx:if="{{formData.hasSelfTrade}}" type="success" size="20" color="#15B889" />
+          </view>
+          <text>线下自提</text>
+        </view>
+        <view 
+          class="checkbox-item {{formData.hasExchangeTrade ? 'checked' : ''}}" 
+          bindtap="toggleTradeMethod"
+          data-value="exchange"
+        >
+          <view class="checkbox">
+            <icon wx:if="{{formData.hasExchangeTrade}}" type="success" size="20" color="#15B889" />
+          </view>
+          <text>可置换</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">商品描述 <text class="required">*</text></text>
+      <textarea 
+        class="form-textarea" 
+        placeholder="请描述商品的新旧程度、使用情况等信息"
+        value="{{formData.description}}"
+        bindinput="onInputChange"
+        data-field="description"
+        maxlength="500"
+      />
+      <text class="textarea-count">{{formData.description.length || 0}}/500</text>
+    </view>
+  </view>
+
+  <view class="submit-btn" bindtap="submitForm">
+    <text>发布商品</text>
+  </view>
+</view>
