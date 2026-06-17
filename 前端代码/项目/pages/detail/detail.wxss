@@ -1,0 +1,282 @@
+.goods-images {
+  width: 100%;
+  height: 600rpx;
+  background-color: #FFFFFF;
+}
+
+.image-swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-image {
+  width: 100%;
+  height: 100%;
+}
+
+.detail-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #DCE9E5 0%, #EEF6F3 100%);
+  color: #078867;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  font-weight: 600;
+}
+
+.goods-info {
+  background-color: #FFFFFF;
+  padding: 24rpx 36rpx;
+  margin-bottom: 20rpx;
+}
+
+.price-row {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 16rpx;
+}
+
+.price {
+  font-size: 48rpx;
+  font-weight: 600;
+  color: #EF5B5B;
+}
+
+.original-price {
+  font-size: 26rpx;
+  color: #999999;
+  text-decoration: line-through;
+  margin-left: 16rpx;
+}
+
+.title {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333333;
+  line-height: 1.5;
+  margin-bottom: 16rpx;
+}
+
+.goods-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-bottom: 16rpx;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 26rpx;
+  color: #999999;
+}
+
+.location {
+  background-color: #EEF6F3;
+  padding: 6rpx 16rpx;
+  border-radius: 8rpx;
+}
+
+.section-title {
+  padding-bottom: 20rpx;
+  border-bottom: 2rpx solid #DCE9E5;
+  margin-bottom: 20rpx;
+}
+
+.title-text {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333333;
+}
+
+.description {
+  font-size: 28rpx;
+  color: #666666;
+  line-height: 1.8;
+}
+
+.seller-info {
+  display: flex;
+  align-items: center;
+}
+
+.seller-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+}
+
+.seller-avatar-placeholder {
+  background-color: #DCE9E5;
+  color: #078867;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34rpx;
+  font-weight: 600;
+}
+
+.seller-detail {
+  flex: 1;
+}
+
+.seller-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+
+.seller-name {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #333333;
+  margin-right: 12rpx;
+}
+
+.seller-meta {
+  display: flex;
+  gap: 24rpx;
+}
+
+.seller-studentId {
+  font-size: 26rpx;
+  color: #999999;
+}
+
+.credit-score {
+  font-size: 26rpx;
+  color: #15B889;
+}
+
+.chat-btn {
+  width: 120rpx;
+  height: 64rpx;
+  background: linear-gradient(135deg, #15B889 0%, #078867 100%);
+  border-radius: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-size: 26rpx;
+}
+
+.rules {
+  padding-left: 16rpx;
+}
+
+.rule-item {
+  display: flex;
+  margin-bottom: 16rpx;
+}
+
+.rule-item:last-child {
+  margin-bottom: 0;
+}
+
+.rule-num {
+  width: 40rpx;
+  height: 40rpx;
+  background-color: #15B889;
+  border-radius: 50%;
+  color: #FFFFFF;
+  font-size: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+}
+
+.rule-text {
+  font-size: 26rpx;
+  color: #666666;
+  line-height: 1.6;
+}
+
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  height: 100rpx;
+  background-color: #FFFFFF;
+  box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.06);
+  padding: 0 36rpx;
+}
+
+.bottom-left {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.fav-btn {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fav-btn text {
+  font-size: 44rpx;
+  color: #CCCCCC;
+}
+
+.fav-btn.favorited text {
+  color: #EF5B5B;
+}
+
+.report-btn {
+  padding: 8rpx 20rpx;
+  border: 1rpx solid #DDDDDD;
+  border-radius: 24rpx;
+}
+
+.report-btn text {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.bottom-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 20rpx;
+}
+
+.contact-btn {
+  width: 220rpx;
+  height: 72rpx;
+  background: #DCE9E5;
+  border-radius: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #078867;
+  font-size: 30rpx;
+  font-weight: 500;
+}
+
+.buy-btn {
+  width: 240rpx;
+  height: 72rpx;
+  background: linear-gradient(135deg, #EF5B5B 0%, #DC2626 100%);
+  border-radius: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-size: 30rpx;
+  font-weight: 500;
+}
+
+.btn-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}

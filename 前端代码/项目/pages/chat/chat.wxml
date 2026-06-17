@@ -1,0 +1,45 @@
+<view class="chat-page">
+  <scroll-view
+    class="message-list"
+    scroll-y
+    scroll-into-view="{{scrollIntoView}}"
+  >
+    <view class="goods-tip" wx:if="{{conversation.goodsTitle}}">
+      <text>{{conversation.goodsTitle}}</text>
+    </view>
+
+    <view
+      wx:for="{{messages}}"
+      wx:key="id"
+      id="msg-{{item.id}}"
+      class="message-row {{item.role === 'me' ? 'mine' : ''}} {{item.role === 'system' ? 'system' : ''}}"
+    >
+      <view wx:if="{{item.role === 'system'}}" class="system-message">
+        <text>{{item.content}}</text>
+      </view>
+      <block wx:else>
+        <view class="avatar">
+          <text>{{item.role === 'me' ? '我' : (conversation.sellerInitial || '卖')}}</text>
+        </view>
+        <view class="bubble">
+          <text>{{item.content}}</text>
+          <text class="time">{{item.time}}</text>
+        </view>
+      </block>
+    </view>
+  </scroll-view>
+
+  <view class="input-bar safe-area-bottom">
+    <input
+      class="message-input"
+      value="{{inputValue}}"
+      bindinput="onInput"
+      placeholder="输入消息"
+      confirm-type="send"
+      bindconfirm="sendMessage"
+    />
+    <view class="send-btn" bindtap="sendMessage">
+      <text>发送</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,69 @@
+<view class="container">
+  <view class="search-panel">
+    <view class="search-box">
+      <icon type="search" size="18" color="#999" />
+      <input
+        class="search-input"
+        placeholder="搜索商品名称、分类、卖家"
+        value="{{keyword}}"
+        focus="{{focus}}"
+        bindinput="onInput"
+        bindconfirm="onSearch"
+      />
+      <view wx:if="{{keyword}}" class="clear-btn" bindtap="clearKeyword">
+        <icon type="clear" size="16" color="#999" />
+      </view>
+    </view>
+    <view class="search-btn" bindtap="onSearch">
+      <text>搜索</text>
+    </view>
+  </view>
+
+  <view class="result-meta">
+    <text>{{loading ? '正在加载...' : '共 ' + goodsList.length + ' 件商品'}}</text>
+  </view>
+
+  <view class="sort-bar">
+    <view class="sort-item {{sortBy === '' ? 'active' : ''}}" bindtap="onSortChange" data-sort="">
+      <text>最新发布</text>
+    </view>
+    <view class="sort-item {{sortBy === 'price_asc' ? 'active' : ''}}" bindtap="onSortChange" data-sort="price_asc">
+      <text>价格↑</text>
+    </view>
+    <view class="sort-item {{sortBy === 'price_desc' ? 'active' : ''}}" bindtap="onSortChange" data-sort="price_desc">
+      <text>价格↓</text>
+    </view>
+  </view>
+
+  <view class="goods-list">
+    <view class="goods-card" wx:for="{{goodsList}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <image wx:if="{{item.coverImage}}" class="goods-image" src="{{item.coverImage}}" mode="aspectFill" />
+      <view wx:else class="goods-image image-placeholder">
+        <text>{{item.categoryName || '商品'}}</text>
+      </view>
+      <view class="goods-info">
+        <text class="goods-title ellipsis-2">{{item.title}}</text>
+        <text class="goods-desc ellipsis">{{item.description}}</text>
+        <view class="goods-tags">
+          <text class="tag tag-primary">{{item.categoryName}}</text>
+          <text class="tag tag-primary" wx:if="{{item.isCertified}}">本校认证</text>
+          <text class="tag tag-blue" wx:if="{{item.pickup}}">线下自提</text>
+          <text class="tag tag-orange" wx:if="{{item.tradeable}}">可置换</text>
+        </view>
+        <view class="goods-footer">
+          <text class="goods-price">¥{{item.price}}</text>
+          <text class="publish-time">{{item.publishTime}}</text>
+        </view>
+        <view class="seller-info">
+          <text class="seller-name">{{item.sellerName}}</text>
+          <text class="credit-score">{{item.creditScore}}分</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty-state" wx:if="{{!loading && goodsList.length === 0}}">
+    <icon type="search" size="80" color="#ccc" />
+    <text>没有找到相关商品</text>
+  </view>
+</view>
