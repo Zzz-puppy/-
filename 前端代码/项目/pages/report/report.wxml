@@ -1,0 +1,39 @@
+<view class="container">
+  <view class="card">
+    <view class="section-title">
+      <text class="title-text">选择举报类型</text>
+    </view>
+    <view class="type-list">
+      <view class="type-item {{selectedType === item.value ? 'active' : ''}}"
+            wx:for="{{reportTypes}}" wx:key="value"
+            bindtap="selectType" data-type="{{item.value}}">
+        <view class="type-radio">
+          <view class="radio-dot" wx:if="{{selectedType === item.value}}"></view>
+        </view>
+        <view class="type-info">
+          <text class="type-label">{{item.label}}</text>
+          <text class="type-desc">{{item.desc}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">
+      <text class="title-text">补充说明</text>
+    </view>
+    <textarea class="desc-input"
+              placeholder="请详细描述举报原因，以便我们更快处理..."
+              maxlength="500"
+              bindinput="onDescInput"
+              value="{{description}}" />
+    <text class="char-count">{{description.length}}/500</text>
+  </view>
+
+  <view class="submit-area">
+    <view class="btn-primary submit-btn" bindtap="submit">
+      <text>提交举报</text>
+    </view>
+    <text class="tip">举报为匿名，您的信息不会被泄露</text>
+  </view>
+</view>

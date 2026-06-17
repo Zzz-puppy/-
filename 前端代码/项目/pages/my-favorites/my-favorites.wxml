@@ -1,0 +1,28 @@
+<view class="container">
+  <view class="empty" wx:if="{{!loading && favorites.length === 0}}">
+    <text class="empty-icon">★</text>
+    <text class="empty-text">还没有收藏任何商品</text>
+    <view class="btn-primary go-home-btn" bindtap="goHome">
+      <text>去逛逛</text>
+    </view>
+  </view>
+
+  <view class="favorites-list" wx:else>
+    <view class="favorite-item" wx:for="{{favorites}}" wx:key="id" bindtap="goDetail" data-id="{{item.itemId}}">
+      <image wx:if="{{item.imageUrl}}" class="fav-image" src="{{item.imageUrl}}" mode="aspectFill" />
+      <view wx:else class="fav-image fav-image-placeholder">
+        <text>{{item.title[0] || '商'}}</text>
+      </view>
+      <view class="fav-info">
+        <text class="fav-title">{{item.title}}</text>
+        <view class="fav-meta">
+          <text class="fav-price">¥{{item.price}}</text>
+          <text class="fav-seller">{{item.sellerName}}</text>
+        </view>
+      </view>
+      <view class="fav-delete" catchtap="removeFavorite" data-id="{{item.itemId}}">
+        <text>♥</text>
+      </view>
+    </view>
+  </view>
+</view>
