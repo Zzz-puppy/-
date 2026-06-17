@@ -1,0 +1,42 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/publish/publish",
+    "pages/message/message",
+    "pages/profile/profile",
+    "pages/detail/detail",
+    "pages/chat/chat",
+    "pages/search/search",
+    "pages/orders/orders",
+    "pages/my-publish/my-publish",
+    "pages/admin/admin",
+    "pages/my-favorites/my-favorites",
+    "pages/report/report",
+    "pages/wanted/wanted"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "校易助",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#EEF6F3",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#15B889",
+    "borderStyle": "white",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      {"pagePath": "pages/index/index", "text": "首页"},
+      {"pagePath": "pages/publish/publish", "text": "发布"},
+      {"pagePath": "pages/message/message", "text": "消息"},
+      {"pagePath": "pages/profile/profile", "text": "我的"}
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {"desc": "用于获取校园位置，展示附近的二手商品"},
+    "scope.userInfo": {"desc": "用于获取用户信息，完善个人资料"}
+  },
+  "sitemapLocation": "sitemap.json"
+}
