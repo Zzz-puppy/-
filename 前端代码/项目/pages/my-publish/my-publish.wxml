@@ -1,0 +1,67 @@
+<view class="container">
+  <view class="tabs">
+    <view 
+      class="tab-item {{currentStatus === 'all' ? 'active' : ''}}" 
+      bindtap="switchStatus"
+      data-status="all"
+    >
+      <text>全部</text>
+    </view>
+    <view 
+      class="tab-item {{currentStatus === 'onSale' ? 'active' : ''}}" 
+      bindtap="switchStatus"
+      data-status="onSale"
+    >
+      <text>在售</text>
+    </view>
+    <view 
+      class="tab-item {{currentStatus === 'sold' ? 'active' : ''}}" 
+      bindtap="switchStatus"
+      data-status="sold"
+    >
+      <text>已售</text>
+    </view>
+  </view>
+
+  <view class="goods-list">
+    <view class="goods-card" wx:for="{{publishList}}" wx:key="id">
+      <image class="goods-image" src="{{item.coverImage}}" mode="aspectFill" bindtap="goDetail" data-id="{{item.id}}" />
+      <view class="goods-info" bindtap="goDetail" data-id="{{item.id}}">
+        <text class="goods-title ellipsis-2">{{item.title}}</text>
+        <text class="goods-price">¥{{item.price}}</text>
+        <view class="goods-meta">
+          <text class="goods-status {{item.status === 'onSale' ? 'on-sale' : (item.status === 'sold' ? 'sold' : 'off-sale')}}">
+            {{item.status === 'onSale' ? '在售' : (item.status === 'sold' ? '已售出' : '已下架')}}
+          </text>
+          <text class="goods-time">{{item.publishTime}}</text>
+        </view>
+      </view>
+      <view class="goods-actions">
+        <view 
+          class="action-btn" 
+          wx:if="{{item.status === 'onSale'}}"
+          bindtap="markSold" 
+          data-id="{{item.id}}"
+        >
+          <text>售出</text>
+        </view>
+        <view 
+          class="action-btn delete" 
+          wx:if="{{item.status === 'onSale'}}"
+          bindtap="deleteGoods" 
+          data-id="{{item.id}}"
+        >
+          <text>下架</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty-state" wx:if="{{publishList.length === 0}}">
+    <icon type="edit" size="80" color="#ccc" />
+    <text>暂无发布</text>
+    <view class="empty-btn" bindtap="goPublish">
+      <text>去发布</text>
+    </view>
+  </view>
+</view>

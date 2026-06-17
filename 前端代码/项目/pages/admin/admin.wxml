@@ -1,0 +1,130 @@
+<view class="page-container">
+  <view class="header">
+    <view class="header-title">管理系统</view>
+    <view class="header-subtitle">校易助管理系统</view>
+  </view>
+
+  <view class="tab-bar">
+    <view class="tab-item {{activeTab === 'cert' ? 'active' : ''}}" data-tab="cert" bindtap="switchTab">
+      <text>认证审核</text>
+      <view class="tab-badge" wx:if="{{pendingCertCount > 0}}">{{pendingCertCount}}</view>
+    </view>
+    <view class="tab-item {{activeTab === 'users' ? 'active' : ''}}" data-tab="users" bindtap="switchTab">
+      <text>用户管理</text>
+    </view>
+    <view class="tab-item {{activeTab === 'items' ? 'active' : ''}}" data-tab="items" bindtap="switchTab">
+      <text>商品管理</text>
+    </view>
+    <view class="tab-item {{activeTab === 'reports' ? 'active' : ''}}" data-tab="reports" bindtap="switchTab">
+      <text>举报管理</text>
+      <view class="tab-badge" wx:if="{{pendingReportCount > 0}}">{{pendingReportCount}}</view>
+    </view>
+  </view>
+
+  <!-- 认证审核标签页 -->
+  <view class="tab-content" wx:if="{{activeTab === 'cert'}}">
+    <view class="content-card">
+      <view class="content-header">
+        <text class="content-title">待审核认证申请</text>
+      </view>
+      <view wx:if="{{pendingCerts.length === 0}}" class="empty-state">
+        <text>暂无待审核的认证申请</text>
+      </view>
+      <view wx:for="{{pendingCerts}}" wx:key="id" class="cert-item">
+        <view class="cert-info">
+          <text class="cert-user">用户ID: {{item.userId}}</text>
+          <text class="cert-student-id">学号: {{item.studentId}}</text>
+          <text class="cert-time">申请时间: {{item.createTime}}</text>
+        </view>
+        <view class="cert-actions">
+          <button class="btn-approve" bindtap="approveCert" data-id="{{item.id}}">批准</button>
+          <button class="btn-reject" bindtap="rejectCert" data-id="{{item.id}}">拒绝</button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 用户管理标签页 -->
+  <view class="tab-content" wx:if="{{activeTab === 'users'}}">
+    <view class="content-card">
+      <view class="content-header">
+        <text class="content-title">用户列表 ({{users.length}})</text>
+      </view>
+      <view wx:if="{{users.length === 0}}" class="empty-state">
+        <text>暂无用户数据</text>
+      </view>
+      <scroll-view scroll-y class="user-list-scroll">
+        <view wx:for="{{users}}" wx:key="id" class="user-item">
+          <view class="user-item-header">
+            <text class="user-item-name">{{item.nickname || '未命名'}}</text>
+          </view>
+          <view class="user-item-detail">
+            <text>ID: {{item.id}}</text>
+            <text>信用分: {{item.creditScore !== null && item.creditScore !== undefined ? item.creditScore : 60}}</text>
+            <text>认证: {{item.isCertified ? '已认证' : '未认证'}}</text>
+            <text>成交: {{item.completedDeals || 0}} / 取消: {{item.cancelledDeals || 0}}</text>
+          </view>
+          <view class="user-item-actions">
+            <button class="btn-small btn-credit-up" bindtap="adjustCredit" data-id="{{item.id}}" data-delta="10">+10分</button>
+            <button class="btn-small btn-credit-down" bindtap="adjustCredit" data-id="{{item.id}}" data-delta="-10">-10分</button>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 商品管理标签页 -->
+  <view class="tab-content" wx:if="{{activeTab === 'items'}}">
+    <view class="content-card">
+      <view class="content-header">
+        <text class="content-title">商品列表 ({{items.length}})</text>
+      </view>
+      <view wx:if="{{items.length === 0}}" class="empty-state">
+        <text>暂无商品数据</text>
+      </view>
+      <scroll-view scroll-y class="item-list-scroll">
+        <view wx:for="{{items}}" wx:key="id" class="user-item">
+          <view class="user-item-header">
+            <text class="user-item-name">{{item.title}}</text>
+            <text class="user-item-role {{item.status === 0 ? 'status-normal' : 'status-banned'}}">{{item.status === 0 ? '在售' : item.status === 1 ? '已售出' : '已下架'}}</text>
+          </view>
+          <view class="user-item-detail">
+            <text>ID: {{item.id}} | 卖家ID: {{item.sellerId}}</text>
+            <text>价格: ¥{{item.price}}</text>
+          </view>
+          <view class="user-item-actions" wx:if="{{item.status === 0}}">
+            <button class="btn-small btn-ban" bindtap="banItem" data-id="{{item.id}}">下架商品</button>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 举报管理标签页 -->
+  <view class="tab-content" wx:if="{{activeTab === 'reports'}}">
+    <view class="content-card">
+      <view class="content-header">
+        <text class="content-title">举报列表 ({{reports.length}})</text>
+      </view>
+      <view wx:if="{{reports.length === 0}}" class="empty-state">
+        <text>暂无举报记录</text>
+      </view>
+      <scroll-view scroll-y class="item-list-scroll">
+        <view wx:for="{{reports}}" wx:key="id" class="user-item">
+          <view class="user-item-header">
+            <text class="user-item-name">{{item.type === 'fake' ? '虚假商品' : item.type === 'illegal' ? '违规品类' : item.type === 'resale' ? '恶意引流' : '交易纠纷'}} — 商品ID: {{item.itemId}}</text>
+            <text class="user-item-role {{item.status === 'pending' ? 'status-pending' : item.status === 'approved' ? 'status-normal' : 'status-banned'}}">{{item.status === 'pending' ? '待处理' : item.status === 'approved' ? '已批准' : '已驳回'}}</text>
+          </view>
+          <view class="user-item-detail">
+            <text>举报人ID: {{item.reporterId}} | 时间: {{item.createTime}}</text>
+            <text wx:if="{{item.description}}">说明: {{item.description}}</text>
+          </view>
+          <view class="user-item-actions" wx:if="{{item.status === 'pending'}}">
+            <button class="btn-small btn-approve" bindtap="approveReport" data-id="{{item.id}}">批准(下架商品)</button>
+            <button class="btn-small btn-reject" bindtap="rejectReport" data-id="{{item.id}}">驳回</button>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>
