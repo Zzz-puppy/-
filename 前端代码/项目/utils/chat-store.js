@@ -1,20 +1,10 @@
-const CONVERSATION_KEY = 'local_chat_conversations';
-const MESSAGE_PREFIX = 'local_chat_messages_';
-
-function nowText() {
-  const date = new Date();
-  const hour = String(date.getHours()).padStart(2, '0');
-  const minute = String(date.getMinutes()).padStart(2, '0');
-  return `${hour}:${minute}`;
-}
-
 export class ChatStore {
   static getConversations() {
-    return wx.getStorageSync(CONVERSATION_KEY) || [];
+    return wx.getStorageSync('local_chat_conversations') || [];
   }
 
   static saveConversations(conversations) {
-    wx.setStorageSync(CONVERSATION_KEY, conversations);
+    wx.setStorageSync('local_chat_conversations', conversations);
   }
 
   static getConversation(id) {
@@ -24,120 +14,74 @@ export class ChatStore {
   static upsertConversation(conversation) {
     const conversations = this.getConversations();
     const index = conversations.findIndex(item => item.id === conversation.id);
-    const next = {
-      ...conversation,
-      updateTime: conversation.updateTime || nowText(),
-      unread: conversation.unread || 0
-    };
-
+    
+    function nowText() {
+      const d = new Date();
+      return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+    }
+    
+    const next = { ...conversation, updateTime: conversation.updateTime || nowText(), unread: conversation.unread || 0 };
     if (index >= 0) {
-      conversations.splice(index, 1, {
-        ...conversations[index],
-        ...next
-      });
+      conversations.splice(index, 1, { ...conversations[index], ...next });
     } else {
       conversations.unshift(next);
     }
-
     this.saveConversations(conversations);
     return next;
   }
 
   static createProductConversation(goods = {}, seller = {}) {
     const id = `goods_${goods.id || Date.now()}`;
-    const title = goods.title || '商品咨询';
     const sellerName = seller.nickname || goods.sellerName || '校园卖家';
-    const isCertified = goods.isCertified || seller.isCertified || false;
-    const conversation = this.upsertConversation({
-      id,
-      goodsId: goods.id || '',
-      sellerName,
-      sellerInitial: (sellerName || '卖').slice(0, 1),
-      sellerIsCertified: isCertified,
-      goodsTitle: title,
-      lastMessage: `想咨询「${title}`,
-      updateTime: nowText()
+    this.upsertConversation({
+      id, goodsId: goods.id || '', sellerName, sellerInitial: (sellerName || '卖').slice(0, 1),
+      sellerIsCertified: goods.isCertified || seller.isCertified || false,
+      goodsTitle: goods.title || '商品咨询', lastMessage: `想咨询「${goods.title || ''}」`, updateTime: this._nowText()
     });
-
-    const messages = this.getMessages(id);
-    if (!messages.length) {
-      this.saveMessages(id, [{
-        id: Date.now(),
-        role: 'system',
-        content: `已进入 ${sellerName} 的商品咨询`,
-        time: nowText()
-      }]);
+    if (!this.getMessages(id).length) {
+      this.saveMessages(id, [{ id: Date.now(), role: 'system', content: `已进入 ${sellerName} 的商品咨询`, time: this._nowText() }]);
     }
-
-    return conversation;
+    return id;
   }
 
   static createWantedConversation(wanted = {}) {
     const id = `wanted_${wanted.id || Date.now()}`;
     const userName = wanted.userName || '匿名用户';
-    const title = wanted.title || '求购咨询';
-    const isCertified = wanted.userIsCertified || false;
-    const conversation = this.upsertConversation({
-      id,
-      goodsId: wanted.id || '',
-      sellerName: userName,
-      sellerInitial: (userName || '求').slice(0, 1),
-      sellerIsCertified: isCertified,
-      goodsTitle: title,
-      lastMessage: `想回应你的求购「${title}`,
-      updateTime: nowText()
+    this.upsertConversation({
+      id, goodsId: wanted.id || '', sellerName: userName, sellerInitial: (userName || '求').slice(0, 1),
+      sellerIsCertified: wanted.userIsCertified || false,
+      goodsTitle: wanted.title || '求购咨询', lastMessage: `想回应你的求购「${wanted.title || ''}」`, updateTime: this._nowText()
     });
-
-    const messages = this.getMessages(id);
-    if (!messages.length) {
-      this.saveMessages(id, [{
-        id: Date.now(),
-        role: 'system',
-        content: `已进入 ${userName} 的求购咨询`,
-        time: nowText()
-      }]);
+    if (!this.getMessages(id).length) {
+      this.saveMessages(id, [{ id: Date.now(), role: 'system', content: `已进入 ${userName} 的求购咨询`, time: this._nowText() }]);
     }
-
-    return conversation;
+    return id;
   }
 
   static getMessages(conversationId) {
-    return wx.getStorageSync(`${MESSAGE_PREFIX}${conversationId}`) || [];
+    return wx.getStorageSync(`local_chat_messages_${conversationId}`) || [];
   }
 
   static saveMessages(conversationId, messages) {
-    wx.setStorageSync(`${MESSAGE_PREFIX}${conversationId}`, messages);
+    wx.setStorageSync(`local_chat_messages_${conversationId}`, messages);
   }
 
   static addMessage(conversationId, role, content) {
-    const message = {
-      id: Date.now(),
-      role,
-      content,
-      time: nowText()
-    };
-    const messages = [...this.getMessages(conversationId), message];
+    const msg = { id: Date.now(), role, content, time: this._nowText() };
+    const messages = [...this.getMessages(conversationId), msg];
     this.saveMessages(conversationId, messages);
-
-    const conversation = this.getConversation(conversationId);
-    if (conversation) {
-      this.upsertConversation({
-        ...conversation,
-        lastMessage: content,
-        updateTime: message.time
-      });
-    }
-
-    return message;
+    const conv = this.getConversation(conversationId);
+    if (conv) this.upsertConversation({ ...conv, lastMessage: content, updateTime: msg.time });
+    return msg;
   }
 
   static clearUnread(conversationId) {
-    const conversation = this.getConversation(conversationId);
-    if (conversation) {
-      this.upsertConversation({
-        ...conversation,
-        unread: 0
-      });
-    }
+    const conv = this.getConversation(conversationId);
+    if (conv) this.upsertConversation({ ...conv, unread: 0 });
+  }
+
+  static _nowText() {
+    const d = new Date();
+    return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
   }
 }
