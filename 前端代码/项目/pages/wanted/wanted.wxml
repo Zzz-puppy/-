@@ -1,0 +1,83 @@
+<view class="container">
+  <view class="header-banner">
+    <text class="banner-icon">🔍</text>
+    <view class="banner-text">
+      <text class="banner-title">求购专区</text>
+      <text class="banner-desc">发布你的需求，让卖家来找你</text>
+    </view>
+    <view class="btn-primary publish-btn" wx:if="{{activeTab === 'all'}}" bindtap="showPublish">
+      <text>发布求购</text>
+    </view>
+  </view>
+
+  <view class="wanted-tabs">
+    <view class="wanted-tab {{activeTab === 'all' ? 'active' : ''}}" bindtap="switchTab" data-tab="all">
+      <text>全部求购</text>
+    </view>
+    <view class="wanted-tab {{activeTab === 'my' ? 'active' : ''}}" bindtap="switchTab" data-tab="my">
+      <text>我的求购</text>
+    </view>
+  </view>
+
+  <view class="wanted-list">
+    <view class="wanted-card" wx:for="{{list}}" wx:key="id">
+      <view class="wanted-main" bindtap="goDetail" data-id="{{item.id}}">
+        <view class="wanted-header">
+          <text class="wanted-title">{{item.title}}</text>
+          <text class="wanted-category" wx:if="{{item.categoryName}}">{{item.categoryName}}</text>
+        </view>
+        <text class="wanted-desc">{{item.description || '暂无详细描述'}}</text>
+        <view class="wanted-footer">
+          <text class="wanted-budget">{{item.budget ? '¥' + item.budget : '预算待议'}}</text>
+          <text class="wanted-user">{{item.userName || '匿名用户'}}</text>
+          <text class="tag tag-primary tag-small" wx:if="{{item.userIsCertified}}">本校认证</text>
+          <text class="wanted-time">{{item.createTime}}</text>
+        </view>
+      </view>
+      <view class="wanted-actions" wx:if="{{activeTab === 'my' && item.status === 0}}">
+        <view class="btn-cancel" bindtap="cancelWanted" data-id="{{item.id}}">
+          <text>取消</text>
+        </view>
+      </view>
+      <view class="wanted-actions" wx:elif="{{activeTab === 'all'}}">
+        <view class="btn-contact" bindtap="goDetail" data-id="{{item.id}}">
+          <text>联系TA</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty-state" wx:if="{{list.length === 0 && !loading}}">
+    <text>暂无求购需求</text>
+  </view>
+</view>
+
+<view class="modal-mask" wx:if="{{showModal}}" bindtap="hidePublish">
+  <view class="modal-card" catchtap="preventTap">
+    <text class="modal-title">发布求购</text>
+    <view class="form-group">
+      <text class="form-label">需求标题 *</text>
+      <input class="form-input" placeholder="例如：求购二手iPhone 14" value="{{form.title}}" bindinput="onFieldChange" data-field="title" />
+    </view>
+    <view class="form-group">
+      <text class="form-label">分类</text>
+      <picker mode="selector" range="{{categories}}" range-key="name" value="{{form.categoryIndex}}" bindchange="onCategoryChange">
+        <view class="form-picker">
+          <text>{{categories[form.categoryIndex] ? categories[form.categoryIndex].name : '请选择'}}</text>
+        </view>
+      </picker>
+    </view>
+    <view class="form-group">
+      <text class="form-label">预算金额（元）</text>
+      <input class="form-input" type="digit" placeholder="例：3500" value="{{form.budget}}" bindinput="onFieldChange" data-field="budget" />
+    </view>
+    <view class="form-group">
+      <text class="form-label">详细描述</text>
+      <textarea class="form-textarea" placeholder="描述你想找的商品..." value="{{form.description}}" bindinput="onFieldChange" data-field="description" maxlength="500" />
+    </view>
+    <view class="modal-btns">
+      <view class="btn-cancel" bindtap="hidePublish"><text>取消</text></view>
+      <view class="btn-primary" bindtap="doPublish"><text>发布</text></view>
+    </view>
+  </view>
+</view>

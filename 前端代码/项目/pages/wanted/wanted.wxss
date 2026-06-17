@@ -1,0 +1,278 @@
+.container {
+  padding: 24rpx;
+  min-height: 100vh;
+  background-color: #EEF6F3;
+}
+
+.header-banner {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #15B889, #0D9E6F);
+  border-radius: 16rpx;
+  padding: 28rpx;
+  margin-bottom: 24rpx;
+}
+
+.banner-icon {
+  font-size: 48rpx;
+  margin-right: 20rpx;
+}
+
+.banner-text {
+  flex: 1;
+}
+
+.banner-title {
+  font-size: 34rpx;
+  color: #FFFFFF;
+  font-weight: 600;
+  display: block;
+}
+
+.banner-desc {
+  font-size: 24rpx;
+  color: rgba(255,255,255,0.8);
+  margin-top: 4rpx;
+}
+
+.publish-btn {
+  background: #FFFFFF;
+  color: #15B889;
+  padding: 12rpx 28rpx;
+  border-radius: 32rpx;
+  font-size: 26rpx;
+  font-weight: 500;
+}
+
+.wanted-tabs {
+  display: flex;
+  background: #fff;
+  border-radius: 12rpx;
+  margin: 0 24rpx 20rpx;
+  padding: 6rpx;
+}
+
+.wanted-tab {
+  flex: 1;
+  text-align: center;
+  padding: 16rpx 0;
+  font-size: 28rpx;
+  color: #666;
+  border-radius: 8rpx;
+  transition: all 0.3s;
+}
+
+.wanted-tab.active {
+  background: #15B889;
+  color: #fff;
+  font-weight: 500;
+}
+
+.wanted-list {
+  display: flex;
+  flex-direction: column;
+  padding: 0 24rpx;
+}
+
+.wanted-card {
+  background: #fff;
+  border-radius: 12rpx;
+  margin-bottom: 24rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
+}
+
+.wanted-main {
+  padding: 28rpx;
+}
+
+.wanted-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.wanted-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+  flex: 1;
+}
+
+.wanted-category {
+  background: #E8F4FD;
+  color: #3B82F6;
+  font-size: 22rpx;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  margin-left: 12rpx;
+  white-space: nowrap;
+}
+
+.wanted-desc {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 16rpx;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.wanted-footer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.wanted-budget {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #EF5B5B;
+}
+
+.wanted-user {
+  font-size: 24rpx;
+  color: #999;
+  max-width: 200rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wanted-time {
+  font-size: 22rpx;
+  color: #bbb;
+}
+
+.wanted-actions {
+  border-top: 1rpx solid #f0f0f0;
+  padding: 16rpx 28rpx;
+  display: flex;
+  justify-content: flex-end;
+  gap: 16rpx;
+}
+
+.btn-contact {
+  background: linear-gradient(135deg, #15B889, #0D9E6F);
+  color: #fff;
+  font-size: 26rpx;
+  padding: 10rpx 36rpx;
+  border-radius: 30rpx;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80rpx;
+  color: #999999;
+  font-size: 28rpx;
+}
+
+/* Modal */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: flex-end;
+  z-index: 100;
+}
+
+.modal-card {
+  background: #FFFFFF;
+  border-radius: 24rpx 24rpx 0 0;
+  padding: 40rpx 32rpx 50rpx;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.modal-title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #333333;
+  display: block;
+  text-align: center;
+  margin-bottom: 32rpx;
+}
+
+.form-group {
+  margin-bottom: 24rpx;
+}
+
+.form-label {
+  font-size: 28rpx;
+  color: #333333;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.form-input {
+  width: 100%;
+  height: 80rpx;
+  background: #F5F7FA;
+  border-radius: 12rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.form-picker {
+  width: 100%;
+  height: 80rpx;
+  background: #F5F7FA;
+  border-radius: 12rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  color: #333333;
+}
+
+.form-textarea {
+  width: 100%;
+  min-height: 160rpx;
+  background: #F5F7FA;
+  border-radius: 12rpx;
+  padding: 16rpx 20rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.modal-btns {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 32rpx;
+}
+
+.btn-cancel {
+  flex: 1;
+  height: 88rpx;
+  background: #F5F7FA;
+  border-radius: 44rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  color: #666666;
+}
+
+.btn-primary {
+  flex: 1;
+  height: 88rpx;
+  background: linear-gradient(135deg, #15B889, #0D9E6F);
+  border-radius: 44rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  color: #FFFFFF;
+  font-weight: 500;
+}
