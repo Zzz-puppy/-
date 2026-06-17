@@ -55,7 +55,7 @@ src/main/java/com/example/xyzmarket/
 │   ├── UserService.java
 │   ├── ItemService.java
 │   ├── OrderService.java
-│   └── ImService.java
+│   ├── ImService.java
 │   └── impl/            # 实现类
 ├── mapper/              # 数据访问层（MyBatis 注解）
 │   ├── UserMapper.java
