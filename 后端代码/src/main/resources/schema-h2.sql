@@ -1,21 +1,22 @@
--- user 在 H2 中是保留关键字，这里用 MySQL 风格反引号避免语法错误（配合 MODE=MySQL）
+# 校易助数据库初始化脚本（H2 模式）
+
 CREATE TABLE IF NOT EXISTS `user` (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     openid VARCHAR(64) NOT NULL UNIQUE,
     nickname VARCHAR(50),
     avatar_url VARCHAR(255),
     student_id VARCHAR(20),
-    is_certified TINYINT(1) DEFAULT 0,
-    certified_at DATETIME,
+    is_certified BOOLEAN DEFAULT FALSE,
     grade VARCHAR(50),
+    certified_at TIMESTAMP,
     credit_score INT DEFAULT 60,
     completed_deals INT DEFAULT 0,
     cancelled_deals INT DEFAULT 0,
     role VARCHAR(10) DEFAULT 'user',
-    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
-    update_time DATETIME DEFAULT CURRENT_TIMESTAMP
+    admin_login_attempts INT DEFAULT 0,
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
 CREATE INDEX IF NOT EXISTS idx_openid ON `user` (openid);
 
 CREATE TABLE IF NOT EXISTS item (
@@ -27,27 +28,25 @@ CREATE TABLE IF NOT EXISTS item (
     seller_id BIGINT NOT NULL,
     category_id INT DEFAULT 6,
     status INT DEFAULT 0,
-    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
-    update_time DATETIME DEFAULT CURRENT_TIMESTAMP
+    pickup BOOLEAN DEFAULT FALSE,
+    tradeable BOOLEAN DEFAULT FALSE,
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
 CREATE INDEX IF NOT EXISTS idx_seller_id ON item (seller_id);
 CREATE INDEX IF NOT EXISTS idx_status ON item (status);
-CREATE INDEX IF NOT EXISTS idx_create_time ON item (create_time);
 
 CREATE TABLE IF NOT EXISTS orders (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     item_id BIGINT NOT NULL,
-    buyer_id BIGINT NOT NULL,
+    buyer_id BIGINT,
     seller_id BIGINT NOT NULL,
     status INT DEFAULT 0,
-    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
-    update_time DATETIME DEFAULT CURRENT_TIMESTAMP
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
 CREATE INDEX IF NOT EXISTS idx_buyer ON orders (buyer_id);
 CREATE INDEX IF NOT EXISTS idx_seller ON orders (seller_id);
-CREATE INDEX IF NOT EXISTS idx_item ON orders (item_id);
 
 CREATE TABLE IF NOT EXISTS certification (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -65,12 +64,9 @@ CREATE TABLE IF NOT EXISTS favorite (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     user_id BIGINT NOT NULL,
     item_id BIGINT NOT NULL,
-    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (user_id, item_id)
 );
-
-CREATE UNIQUE INDEX IF NOT EXISTS idx_favorite_user_item ON favorite (user_id, item_id);
-CREATE INDEX IF NOT EXISTS idx_favorite_user ON favorite (user_id);
-CREATE INDEX IF NOT EXISTS idx_favorite_item ON favorite (item_id);
 
 CREATE TABLE IF NOT EXISTS report (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -86,8 +82,16 @@ CREATE TABLE IF NOT EXISTS report (
     review_time TIMESTAMP
 );
 
-CREATE INDEX IF NOT EXISTS idx_report_status ON report (status);
-CREATE INDEX IF NOT EXISTS idx_report_item ON report (item_id);
+CREATE TABLE IF NOT EXISTS notification (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id BIGINT NOT NULL,
+    type VARCHAR(20) NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    content VARCHAR(500),
+    related_id BIGINT,
+    is_read BOOLEAN DEFAULT FALSE,
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 CREATE TABLE IF NOT EXISTS wanted (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -100,6 +104,3 @@ CREATE TABLE IF NOT EXISTS wanted (
     create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
-CREATE INDEX IF NOT EXISTS idx_wanted_user ON wanted (user_id);
-CREATE INDEX IF NOT EXISTS idx_wanted_status ON wanted (status);

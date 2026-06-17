@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>校易助 UI 原型</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="stage">
+      <section class="phone-shell" aria-label="校易助微信小程序原型">
+        <header class="app-header">
+          <div>
+            <p class="eyebrow">校园二手循环平台</p>
+            <h1 id="screen-title">校易助</h1>
+          </div>
+          <button class="icon-btn" id="notify-btn" type="button" aria-label="消息提醒">
+            <span class="bell-icon"></span>
+          </button>
+        </header>
+        <section class="content">
+          <section class="screen active" data-screen="home">
+            <div class="hero-panel">
+              <div>
+                <p class="hero-kicker">零物流成本</p>
+                <h2>同校认证，当面验货，闲置当天流转</h2>
+                <p>教材、台灯、小家电和代步车都能快速找到下一位同学。</p>
+              </div>
+              <button class="primary-btn" type="button" data-go="publish">发布闲置</button>
+            </div>
+            <div class="quick-flow" aria-label="三步交易流程">
+              <div><strong>1</strong><span>认证身份</span></div>
+              <div><strong>2</strong><span>筛选联系</span></div>
+              <div><strong>3</strong><span>线下成交</span></div>
+            </div>
+            <div class="search-card">
+              <label for="search-input">搜索商品</label>
+              <div class="search-row">
+                <input id="search-input" type="search" placeholder="搜索教材、台灯、考研资料" />
+                <button class="secondary-btn" id="search-btn" type="button">搜索</button>
+              </div>
+            </div>
+            <div class="section-head">
+              <h2>高效分区</h2>
+              <button class="text-btn" type="button" data-go="market">全部</button>
+            </div>
+            <div class="category-grid" id="category-grid"></div>
+            <div class="section-head">
+              <h2>推荐闲置</h2>
+              <button class="text-btn" type="button" data-go="market">更多</button>
+            </div>
+            <div class="product-list compact" id="home-products"></div>
+          </section>
+          <section class="screen" data-screen="market">
+            <div class="search-card sticky-card">
+              <label for="market-search">找你需要的物品</label>
+              <div class="search-row">
+                <input id="market-search" type="search" placeholder="关键词 / 分类 / 卖家信用" />
+                <button class="secondary-btn" id="market-search-btn" type="button">筛选</button>
+              </div>
+            </div>
+            <div class="filter-bar" id="filter-bar"></div>
+            <div class="sort-row">
+              <span id="result-count">0 件商品</span>
+              <select id="sort-select" aria-label="排序方式">
+                <option value="new">最新发布</option>
+                <option value="price-low">价格从低到高</option>
+                <option value="credit">信用优先</option>
+              </select>
+            </div>
+            <div class="product-list" id="market-products"></div>
+          </section>
+          <section class="screen" data-screen="detail">
+            <button class="back-btn" type="button" data-go="market">返回列表</button>
+            <article id="detail-view" class="detail-view"></article>
+          </section>
+          <section class="screen" data-screen="publish">
+            <form class="form-card" id="publish-form">
+              <div class="form-title">
+                <h2>三步发布闲置</h2>
+                <p>模板化填写，减少沟通成本。</p>
+              </div>
+              <label>商品标题<input name="title" required placeholder="例如：九成新宿舍台灯" /></label>
+              <label>分类<select name="category" required><option value="">请选择分类</option><option>教材资料</option><option>宿舍好物</option><option>骑行代步</option><option>美妆衣物</option></select></label>
+              <div class="two-cols">
+                <label>价格<input name="price" required type="number" min="1" placeholder="¥" /></label>
+                <label>成色<select name="condition" required><option>九成新</option><option>八成新</option><option>轻微使用痕迹</option></select></label>
+              </div>
+              <label>交易地点<input name="place" required placeholder="例如：北区食堂门口" /></label>
+              <label>商品描述<textarea name="desc" required placeholder="说明购买时间、瑕疵、附件和可交易时间"></textarea></label>
+              <button class="primary-btn full" type="submit">预览并发布</button>
+              <p class="form-hint" id="publish-feedback">发布后会展示信用分、认证状态和自提地点。</p>
+            </form>
+          </section>
+          <section class="screen" data-screen="wanted">
+            <div class="section-head">
+              <h2>求购区</h2>
+              <button class="primary-btn small" type="button" id="match-btn">智能匹配</button>
+            </div>
+            <div class="wanted-box">
+              <label for="wanted-input">发布需求</label>
+              <textarea id="wanted-input" placeholder="例如：求一本《软件工程导论》，希望 30 元以内，南区交易"></textarea>
+              <button class="secondary-btn" id="wanted-btn" type="button">发布求购</button>
+            </div>
+            <div class="wanted-list" id="wanted-list"></div>
+          </section>
+          <section class="screen" data-screen="messages">
+            <div class="section-head"><h2>联系卖家</h2><span class="status-pill">仅主动联系后展示</span></div>
+            <div class="chat-list" id="chat-list"></div>
+          </section>
+          <section class="screen" data-screen="profile">
+            <div class="profile-card">
+              <div class="avatar">邓</div>
+              <div><h2>邓同学</h2><p>软件工程 2023 级 · 已实名认证</p></div>
+              <span class="credit-badge">信用 96</span>
+            </div>
+            <div class="stats-grid">
+              <div><strong>12</strong><span>发布</span></div>
+              <div><strong>8</strong><span>成交</span></div>
+              <div><strong>5</strong><span>收藏</span></div>
+            </div>
+            <div class="menu-list">
+              <button type="button" data-go="verify">实名认证</button>
+              <button type="button" data-go="publish">我的发布</button>
+              <button type="button" data-go="messages">交易消息</button>
+              <button type="button" data-go="admin">管理员审核入口</button>
+            </div>
+          </section>
+          <section class="screen" data-screen="verify">
+            <form class="form-card" id="verify-form">
+              <div class="form-title"><h2>校园实名认证</h2><p>只允许本校学生进入交易圈，保护交易安全。</p></div>
+              <label>学号<input required placeholder="请输入学号" /></label>
+              <label>校园邮箱<input required type="email" placeholder="name@school.edu.cn" /></label>
+              <label>验证码<input required placeholder="输入邮箱验证码" /></label>
+              <button class="primary-btn full" type="submit">提交认证</button>
+              <p class="form-hint" id="verify-feedback">认证通过后，商品页会显示"本校认证"。</p>
+            </form>
+          </section>
+          <section class="screen" data-screen="report">
+            <form class="form-card" id="report-form">
+              <div class="form-title"><h2>精细化举报</h2><p>举报人匿名，证据加密留存，管理员分层处理。</p></div>
+              <label>举报类型<select required><option>虚假商品</option><option>违规品类</option><option>恶意引流</option><option>交易纠纷</option></select></label>
+              <label>证据说明<textarea required placeholder="请描述聊天记录、交易时间和违规点"></textarea></label>
+              <label>证据截图<input type="file" /></label>
+              <button class="danger-btn full" type="submit">匿名提交举报</button>
+              <p class="form-hint" id="report-feedback">系统会先进行违禁词和高频引流初筛。</p>
+            </form>
+          </section>
+          <section class="screen" data-screen="admin">
+            <div class="section-head"><h2>管理员审核台</h2><span class="status-pill warning">待处理 6</span></div>
+            <div class="admin-grid">
+              <div><strong>18</strong><span>身份审核</span></div>
+              <div><strong>6</strong><span>举报工单</span></div>
+              <div><strong>3</strong><span>下架商品</span></div>
+            </div>
+            <div class="admin-list" id="admin-list"></div>
+          </section>
+        </section>
+        <nav class="tabbar" aria-label="底部导航">
+          <button class="active" type="button" data-go="home"><span class="nav-home"></span>首页</button>
+          <button type="button" data-go="market"><span class="nav-grid"></span>分类</button>
+          <button type="button" data-go="publish"><span class="nav-plus"></span>发布</button>
+          <button type="button" data-go="wanted"><span class="nav-target"></span>求购</button>
+          <button type="button" data-go="profile"><span class="nav-user"></span>我的</button>
+        </nav>
+      </section>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
